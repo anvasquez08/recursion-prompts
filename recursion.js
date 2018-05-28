@@ -23,20 +23,29 @@ var factorial = function(n) {
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+  var arr = array.slice();
+
+  //base case 
   if (array.length === 0) {
-    return 0
+    return 0;
   }
-  return array.shift() + sum(array)
+
+  //recursive case
+  return arr.shift() + sum(arr)
+
+  //one line solution:
+  //return ( array.length === 0 ) ? 0 : array[0] + arraySum(array.slice(1))
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
-  let sum = 0;
-  array.forEach(num => {
-    Array.isArray(num) ? sum += arraySum(num) : sum += num
-  })
-  return sum
+  var sum = 0; 
+  for (var i = 0; i < array.length; i++) {
+      if (array[i] instanceof Array) { sum += arraySum(array[i]) }
+      if (array[i] === Number(array[i])) {sum += array[i]}
+  }
+  return sum;
 };
 
 // 4. Check if a number is even.
@@ -75,12 +84,13 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
-  let arr = []
-  if (x + 1 === y) {
-    return arr
-  }
-  arr.push(x + 1)
-  return arr.concat( range(x + 1, y) )
+	// var array = [];
+
+ //  if(y - x === 1) {
+ //    return array.slice(1)
+ //   }
+ //  array.push(x + 1);
+ //  return array.concat( range(x + 1, y) );
 };
 
 // 7. Compute the exponent of a number.
@@ -165,52 +175,21 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
-  if (str1.length === 0 && str2.length === 0) {
-    return true
-  }
-
-  if (str1[0] === str2[0]) {
-    return compareStr(str1.substring(1), str2.substring(1) )
-  }
-
-  return false
-
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
-  let arr = [];
-  if (str.length === 0) {
-      return arr
-    }
-    arr.push(str[0])
-    return arr.concat( createArray(str.substring(1)))
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
-  let reversed = [];
-  if (array.length === 0) {
-    return reversed
-  }
-  let popped = array.pop()
-  reversed.push(popped)
-  return reversed.concat( reverseArr(array) )
-
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
-  let arr = []
-  if (length === 0) {
-    return arr
-  }
-
-  arr.push(value)
-  return arr.concat( buildList(value, length - 1) )
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -226,48 +205,38 @@ var fizzBuzz = function(n) {
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
-  let counter = 0;
 
-  if (array.length === 0) {
-    return counter 
-  }
-  if (array[0] === value) {
-    counter++
-  }
-  return counter + countOccurrence(array.slice(1), value)
 };
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 
 var rMap = function(array, callback) {
-  let arr = [];
-  if (array.length === 0) {
-    return arr
+
+  // base case 
+  if (array.length === 1) {
+    return callback(array)
   }
 
-  arr.push(callback(array[0])) 
-  return arr.concat(rMap(array.slice(1), callback) )
+  // recursive case 
+  return [ callback(array[0]) ].concat( rMap(array.slice(1), callback) )
 }
 
 // 22. Write a function that counts the number of times a key occurs in an object.
 // var obj = {'e':{'x':'y'},
           //'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
-
 // countKeysInObj(obj, 'r') // 1
 // // countKeysInObj(obj, 'e') // 2
 
 var countKeysInObj = function(obj, key) {
-  let counter = 0;
+  var result = 0; 
+
   for (var k in obj) {
-    if (typeof obj[k] === 'object') {
-      counter += countKeysInObj(obj[k], key)
-    } 
-    if (k === key) {
-      counter++
-    }
+    if (k === key) { result+=1 }
+    if (typeof obj[k] === 'object') { result += countKeysInObj(obj[k], key) }
+
   }
-  return counter 
+  return result; 
 };
 
 
@@ -276,33 +245,19 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
-  let result = 0;
+  var result = 0;
+
   for (var key in obj) {
-    if (typeof obj[key]=== 'object') {
-      result += countValuesInObj(obj[key], value)
-    }
-    if (obj[key] === value) {
-      result++
-    }
+    if (typeof obj[key] === 'object') {result += countValuesInObj(obj[key], value) } 
+    if (obj[key] === value ) { result+=1; }
   }
-  return result
+  return result;
 };
 
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
-  for (var k in obj) {
-    if (k === oldKey) {
-      let values = obj[k]
-      delete obj[oldKey]
-      obj[newKey] = values
-    }
-    if (typeof obj[k] === 'object') {
-      replaceKeysInObj(obj[k], oldKey, newKey)
-    }
-  }
-  return obj
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
@@ -330,7 +285,6 @@ var capitalizeWords = function(array) {
 // 28. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car','poop','banana']); // ['Car','Poop','Banana']
 var capitalizeFirst = function(array) {
-
 
 
 };
@@ -378,12 +332,6 @@ var flatten = function(array) {
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
 var letterTally = function(str, obj) {
-  // base case 
-  if (str.length === 0) {
-    return obj
-  }
-
-  // recursive save 
 
 };
 
