@@ -325,14 +325,24 @@ var nthFibo = function(n) {
 // var words = ['i', 'am', 'learning', 'recursion'];
 // capitalizedWords(words); // ['I', 'AM', 'LEARNING', 'RECURSION']
 var capitalizeWords = function(array) {
+  let arr = [];
+
+  if (array.length === 0) {
+    return arr
+  }
+  arr.push(array[0].toUpperCase())
+  return arr.concat(capitalizeWords(array.slice(1)))
 };
 
 // 28. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car','poop','banana']); // ['Car','Poop','Banana']
 var capitalizeFirst = function(array) {
-
-
-
+  let arr = [];
+  if (array.length === 0) {
+    return arr
+  }
+  arr.push(array[0].charAt(0).toUpperCase() + array[0].slice(1))
+  return arr.concat(capitalizeFirst(array.slice(1)))
 };
 
 
@@ -346,30 +356,31 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
-  var sum = 0;
-
-  // recursive case 
+  let sum = 0
   for (var key in obj) {
-    if (typeof obj[key] === 'object') {  sum += nestedEvenSum(obj[key])} 
-    if ( obj[key] % 2 === 0) { sum += obj[key]}
+    if (typeof obj[key] === 'object') {
+      sum += nestedEvenSum(obj[key])
+    }
+    if (typeof obj[key] === 'number' && obj[key] % 2 === 0) {
+      sum += obj[key]
+    }
   }
-  return sum;  
+  return sum
 };
 
 // 30. Flatten an array containing nested arrays.
 // flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 
 var flatten = function(array) {
-  var result = [];
-
-  for (var i = 0; i < array.length; i++) {
-    if (Array.isArray(array[i])) {
-      result = result.concat( flatten(array[i]) );
-   } else {
-      result.push(array[i]);
+  let arr = []
+  array.forEach(num => {
+    if (Array.isArray(num)) {
+      arr = arr.concat( flatten(num))
+    } else {
+    arr.push(num)
     }
-  }
-  return result;
+  })
+  return arr
 };
 
 
@@ -378,12 +389,17 @@ var flatten = function(array) {
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
 var letterTally = function(str, obj) {
-  // base case 
+  obj = obj || {}
   if (str.length === 0) {
     return obj
   }
 
-  // recursive save 
+  if (!obj[str.charAt(0)]) {
+    obj[str.charAt(0)] = 1
+  } else {
+    obj[str.charAt(0)]++
+  }
+  return letterTally(str.slice(1), obj)
 
 };
 
@@ -414,12 +430,12 @@ var minimizeZeroes = function(array) {
 var alternateSign = function(array) {
 };
 
-// 36. Given a string, return a string with digits converted to their word equivalent.
+/
+/ 36. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
 };
-
 
 // *** EXTRA CREDIT ***
 
